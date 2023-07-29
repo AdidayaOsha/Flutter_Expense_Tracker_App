@@ -40,8 +40,8 @@ class _NewExpenseState extends State<NewExpense> {
       _selectedDate = pickedDate;
     });
   }
-// SUBMIT FORM
 
+// SUBMIT FORM
   void _submitExpenseData() {
     // tryparse: entered numbered string as decimal, won't accept string will return null
     final enteredAmount = double.tryParse(_amountController.text);

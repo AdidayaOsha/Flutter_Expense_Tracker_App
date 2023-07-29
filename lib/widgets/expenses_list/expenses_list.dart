@@ -21,6 +21,13 @@ class ExpensesList extends StatelessWidget {
       itemCount: expenses.length,
       // Dimissible: Swipeable (Need Key Value, not like most of the widgets that does not need any key)
       itemBuilder: (ctx, index) => Dismissible(
+        background: Container(
+          //error theme auto generated from the seed color
+          color: Theme.of(context).colorScheme.error.withOpacity(0.50),
+          margin: EdgeInsets.symmetric(
+            horizontal: Theme.of(context).cardTheme.margin!.horizontal,
+          ),
+        ),
         key: ValueKey(expenses[index]),
         onDismissed: (direction) {
           onRemoveExpense(expenses[index]);
