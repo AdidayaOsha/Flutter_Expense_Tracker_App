@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 
-// we'll add Expenses, and Charts. So that it has to be Stateful Widget
 // WIDGET CLASS
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -15,9 +14,27 @@ class Expenses extends StatefulWidget {
   }
 }
 
-// STATE CLASS SHOULD START FROM "_"
-// State<Expense> will connect to the Expense Widget
 class _ExpensesState extends State<Expenses> {
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+    );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
+
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+  }
+
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'Flutter Course',
@@ -32,15 +49,6 @@ class _ExpensesState extends State<Expenses> {
       category: Category.leisure,
     ),
   ];
-
-  void _openAddExpenseOverlay() {
-    //show built in UI Elements
-    //context: widget meta information
-    showModalBottomSheet(
-      context: context,
-      builder: (ctx) => const NewExpense(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +68,10 @@ class _ExpensesState extends State<Expenses> {
           const Text('The Chart'),
           const SizedBox(height: 10),
           Expanded(
-            child: ExpensesList(expenses: _registeredExpenses),
+            child: ExpensesList(
+              expenses: _registeredExpenses,
+              onRemoveExpense: _removeExpense,
+            ),
           )
         ],
       ),

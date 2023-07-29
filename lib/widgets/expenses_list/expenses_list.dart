@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 
 class ExpensesList extends StatelessWidget {
 // set to accept the expenses as input
-  const ExpensesList({super.key, required this.expenses});
+  const ExpensesList({
+    super.key,
+    required this.expenses,
+    required this.onRemoveExpense,
+  });
   final List<Expense> expenses;
+  final void Function(Expense expense) onRemoveExpense;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,14 @@ class ExpensesList extends StatelessWidget {
     // builder: only build the list when it reaches the list/screen area.
     return ListView.builder(
       itemCount: expenses.length,
-      itemBuilder: (ctx, index) => ExpenseItem(expenses[index]),
+      // Dimissible: Swipeable (Need Key Value, not like most of the widgets that does not need any key)
+      itemBuilder: (ctx, index) => Dismissible(
+        key: ValueKey(expenses[index]),
+        onDismissed: (direction) {
+          onRemoveExpense(expenses[index]);
+        },
+        child: ExpenseItem(expenses[index]),
+      ),
     );
   }
 }
